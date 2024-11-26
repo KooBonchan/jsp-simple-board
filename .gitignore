@@ -1,0 +1,107 @@
+#eclipse specific files
+
+.settings/
+
+.project
+
+.classpath
+
+.metadata/
+
+bin/
+
+tmp/
+
+
+
+# Java compiled files
+
+*.class
+
+
+
+# Build output directories
+
+/target/
+
+/build/
+
+
+
+# Web-related files
+
+*.war
+
+*.ear
+
+
+
+# Maven build output (if using Maven)
+
+target/
+
+
+
+# Gradle build output (if using Gradle)
+
+.gradle/
+
+build/
+
+
+
+# Logs
+
+*.log
+
+
+
+# Operating system files
+
+.DS_Store
+
+Thumbs.db
+
+ehthumbs.db
+
+
+
+# Eclipse-specific .tmp or .bak files
+
+*.bak
+
+*.swp
+
+
+
+# IDE-specific files (e.g., IntelliJ IDEA or NetBeans) that might be present in the workspace
+
+.idea/
+
+
+
+# Java Web Project specific
+
+*.jar      # JAR files, unless needed
+
+*.war      # WAR files, unless you deploy them manually
+
+*.ear      # EAR files, unless required for deployment
+
+*.deploy   # Eclipse deployment files
+
+
+
+# Other potential files to ignore
+
+*.db        # Database files that are not part of the project
+
+*.sqlite    # SQLite database files
+
+
+
+# Eclipse WTP (Web Tools Platform) specific files and directories
+
+.wtpmodules/
+
+
