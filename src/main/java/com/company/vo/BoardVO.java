@@ -30,6 +30,8 @@ public class BoardVO {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		this.formattedPostdate = dateFormat.format(postdate);
 	}
+	
+	@SuppressWarnings("unused") // for invalidating direct setter
 	private void setFormattedPostdate(String ignored) {
 		// to prevent direct setting of formatted postdate
 	}

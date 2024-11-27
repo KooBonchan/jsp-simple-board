@@ -26,7 +26,7 @@ INSERT INTO board (idx, nickname, password, title, CONTENT) VALUES (seq_board_id
 INSERT INTO board (idx, nickname, password, title, CONTENT) VALUES (seq_board_idx.nextval, 'wooten', 'v123!@', 'Stomping Ground', 'in Bela Fleck and the Flecktones');
 INSERT INTO board (idx, nickname, password, title, CONTENT) VALUES (seq_board_idx.nextval, 'narucho', 'y123!@', 'Galactic Funk', 'bass intro + solo');
 INSERT INTO board (idx, nickname, password, title, CONTENT) VALUES (seq_board_idx.nextval, 'smitsuru', 'sutoh123!@', 'Sunnyside Cruise', 'of 35th anniversary version, T-square super big band.');
-
+COMMIT;
 
 
 

@@ -17,7 +17,7 @@ public class ConnectionPoolProvider {
 			DataSource dataSource;
 			Context context = new InitialContext();
 			Context env = (Context) context.lookup("java:/comp/env");
-			dataSource = (DataSource) env.lookup("jdbc/mysql/estore");
+			dataSource = (DataSource) env.lookup("jdbc/oracle");
 			return dataSource;
 		} catch(Exception e) {
 			throw new RuntimeException(e);

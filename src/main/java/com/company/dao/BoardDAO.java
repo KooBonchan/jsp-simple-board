@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +31,38 @@ public class BoardDAO {
 		dataSource = ConnectionPoolProvider.getDataSource();
 	}
 	
+	public boolean createBoard(BoardVO boardVO) {
+		String sql = "INSERT INTO board "
+				+ "(idx, nickname, password, title, content, org_img_path, real_img_path) "
+				+ "VALUES "
+				+ "(seq_board_idx.nextval, ?, ?, ?, ?, ?, ?) ";
+		try(Connection connection = dataSource.getConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(sql))
+		{
+			preparedStatement.setString(1, boardVO.getNickname());
+			preparedStatement.setString(2, boardVO.getPassword());
+			preparedStatement.setString(3, boardVO.getTitle());
+			preparedStatement.setString(4, boardVO.getContent());
+			
+			String originalImagePath = boardVO.getOriginalImagePath();
+			String realImagePath = boardVO.getRealImagePath();
+			if(originalImagePath == null || realImagePath == null) {
+				preparedStatement.setNull(5, Types.VARCHAR);
+				preparedStatement.setNull(6, Types.VARCHAR);
+			} else {
+				preparedStatement.setString(5, originalImagePath);
+				preparedStatement.setString(6, realImagePath);
+			}
+			
+			int result = preparedStatement.executeUpdate();
+			return result > 0;
+		} catch (SQLException e) {
+			System.err.println(sql);
+			System.err.println("SQL INSERT error: " + e.getMessage());
+		}
+		return false;
+	}
+	
 	public List<BoardVO> readBoardPage(int page){
 		if(page < 1) page = 1;
 		int startBoardOpen = page_size * (page - 1);
@@ -43,7 +76,7 @@ public class BoardDAO {
 		{
 			preparedStatement.setInt(1, startBoardOpen);
 			preparedStatement.setInt(2, endBoardClosed);
-			try(ResultSet resultSet = preparedStatement.executeQuery(sql)){
+			try(ResultSet resultSet = preparedStatement.executeQuery()){
 				while(resultSet.next()) {
 					BoardVO boardVO = new BoardVO();
 					int idx = resultSet.getInt("idx");
@@ -64,7 +97,8 @@ public class BoardDAO {
 				}
 			}
 		} catch (SQLException e) {
-			System.err.println("SQL error: " + e.getMessage());
+			System.err.println(sql);
+			System.err.println("SQL SELECT error: " + e.getMessage());
 		}
 		
 		
@@ -81,7 +115,7 @@ public class BoardDAO {
 			PreparedStatement preparedStatement = connection.prepareStatement(sql))
 		{
 			preparedStatement.setInt(1, idx);
-			try(ResultSet resultSet = preparedStatement.executeQuery(sql)){
+			try(ResultSet resultSet = preparedStatement.executeQuery()){
 				if(resultSet.next()) {
 					BoardVO boardVO = new BoardVO();
 					
@@ -110,9 +144,88 @@ public class BoardDAO {
 				}
 			}
 		}catch (SQLException e) {
+			System.err.println(sql);
 			System.err.println("SQL error: " + e.getMessage());
 		}
 		
 		return null;
+	}
+	
+	public boolean checkPermission(int idx, String password) {
+		String sql = "SELECT pageview "
+				+ "FROM board "
+				+ "WHERE idx = ? and password = ? ";
+		try(Connection connection = dataSource.getConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(sql))
+		{
+			preparedStatement.setInt(1, idx);
+			preparedStatement.setString(2, password);
+			try (ResultSet resultSet = preparedStatement.executeQuery()) {
+				if(resultSet.next()) return true;
+			}
+		} catch (SQLException e) {
+			System.err.println(sql);
+			System.err.println("SQL error: " + e.getMessage());
+		}
+		return false;
+	}
+	
+	/*
+	 * Check user permission before use
+	 * */
+	public boolean updateBoard(int idx, BoardVO boardVO) {
+		// need permission
+		boolean imageUpdated = boardVO.getOriginalImagePath() != null &&
+								boardVO.getRealImagePath() != null;
+		
+		String sql = "UPDATE board SET "
+				+ "password = ?, "
+				+ "title = ?, "
+				+ "content = ? "
+				+ (imageUpdated ? ",org_img_path = ?,real_img_path = ? " : "")
+				+ "WHERE idx = ? ";
+		try(Connection connection = dataSource.getConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(sql))
+		{
+			int index = 1;
+			preparedStatement.setString(index++, boardVO.getPassword());
+			preparedStatement.setString(index++, boardVO.getTitle());
+			preparedStatement.setString(index++, boardVO.getContent());
+			
+			String originalImagePath = boardVO.getOriginalImagePath();
+			String realImagePath = boardVO.getRealImagePath();
+			if(imageUpdated) {
+				preparedStatement.setString(index++, originalImagePath);
+				preparedStatement.setString(index++, realImagePath);
+			}
+			preparedStatement.setInt(index++, boardVO.getIdx());
+			
+			int result = preparedStatement.executeUpdate();
+			return result > 0;
+		} catch (SQLException e) {
+			System.err.println(sql);
+			System.err.println("SQL INSERT error: " + e.getMessage());
+		}
+		return false;
+	}
+	
+	/*
+	 * Check user permission before use
+	 * */
+	public boolean deleteBoard(int idx) {
+		// need permission
+		String sql = "DELETE FROM board "
+				+ "WHERE idx = ? ";
+		try(Connection connection = dataSource.getConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(sql))
+		{
+			preparedStatement.setInt(1, idx);
+			int result = preparedStatement.executeUpdate();
+			return result > 0;
+		} catch (SQLException e) {
+			System.err.println(sql);
+			System.err.println("SQL INSERT error: " + e.getMessage());
+		}
+		return false;
 	}
 }
