@@ -64,12 +64,17 @@ public class BoardDAO {
 	}
 	
 	public List<BoardVO> readBoardPage(int page){
+		return readBoardPage(page, null, null);
+	}
+	
+	public List<BoardVO> readBoardPage(int page, String category, String searchQuery){
 		if(page < 1) page = 1;
 		int startBoardOpen = page_size * (page - 1);
 		int endBoardClosed = page_size * (page);
 		List<BoardVO> boards = new ArrayList<>();
+		
 		String sql = "SELECT idx, nickname, title, postdate, pageview, download "
-				+ "FROM board_view "
+				+ searchBoardInlineViewQuery(BoardSearchCategory.fromString(category), searchQuery)
 				+ "WHERE row_num > ? and row_num <= ?";
 		try(Connection connection = dataSource.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(sql))
@@ -100,7 +105,6 @@ public class BoardDAO {
 			System.err.println(sql);
 			System.err.println("SQL SELECT error: " + e.getMessage());
 		}
-		
 		
 		return boards;
 	}
@@ -152,7 +156,7 @@ public class BoardDAO {
 	}
 	
 	public boolean checkPermission(int idx, String password) {
-		String sql = "SELECT pageview "
+		String sql = "SELECT count(pageview) "
 				+ "FROM board "
 				+ "WHERE idx = ? and password = ? ";
 		try(Connection connection = dataSource.getConnection();
@@ -227,5 +231,20 @@ public class BoardDAO {
 			System.err.println("SQL INSERT error: " + e.getMessage());
 		}
 		return false;
+	}
+	
+	private String searchBoardInlineViewQuery(BoardSearchCategory category, String searchQuery) {
+		if(category == null || searchQuery == null || searchQuery.length() == 0) {
+			return " FROM board_view ";
+		}
+		if( ! searchQuery.matches("^[a-zA-Z0-9_ ]*$")) {
+			return " FROM board_view ";
+		}
+		return " FROM ("
+				+ " SELECT idx, nickname, title, postdate, pageview, download, "
+				+ "    row_number() OVER (ORDER BY idx DESC) AS row_num "
+				+ "  FROM board "
+				+ "  WHERE "+ category.toString()+" LIKE '%"+searchQuery+"%'"
+				+ ") target ";
 	}
 }

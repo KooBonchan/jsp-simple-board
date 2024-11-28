@@ -22,8 +22,13 @@ public class BoardList extends HttpServlet {
 		int page = 1;
 		try {
 			page = Integer.parseInt(request.getParameter("page"));
-		} catch(RuntimeException ignored) {}
-		request.setAttribute("boards", boardDAO.readBoardPage(page));
+		} catch(RuntimeException ignored) {
+			page = 1;
+		}
+		
+		String searchCategory = request.getParameter("search-category");
+		String searchQuery = request.getParameter("search-query");
+		request.setAttribute("boards", boardDAO.readBoardPage(page, searchCategory, searchQuery));
 		request.getRequestDispatcher("board-list.jsp").forward(request, response);
 	}
 

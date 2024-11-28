@@ -9,7 +9,7 @@ CREATE TABLE board(
   title varchar2(200) NOT NULL,
   content varchar2(2000) NOT NULL,
   org_img_path varchar2(100),
-  real_img_path varchar2(50),
+  real_img_path char(50),
   -- metadata
   postdate date DEFAULT sysdate NOT NULL,
   pageview integer DEFAULT 0 NOT NULL,
@@ -30,5 +30,6 @@ COMMIT;
 
 
 
+SELECT * FROM board;
 
-
+SELECT pageview FROM board WHERE idx = 4 and password = 'sutoh123!@'; 

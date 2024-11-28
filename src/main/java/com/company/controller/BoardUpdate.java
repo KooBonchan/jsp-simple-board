@@ -23,12 +23,12 @@ public class BoardUpdate extends HttpServlet {
     	try {
     		idx = Integer.parseInt(request.getParameter("idx"));
     	} catch(NumberFormatException e) {
-    		response.sendRedirect("/home?error='No Document'");
+    		response.sendRedirect("/home?error='Wrong idx format'");
     		return;
     	}
     	
     	BoardVO board = boardDAO.readBoard(idx); 
-    	if(board != null) {
+    	if(board == null) {
     		response.sendRedirect("/home?error='No Document'");
     		return;
     	}
