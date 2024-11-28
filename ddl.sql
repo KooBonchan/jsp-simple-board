@@ -31,5 +31,3 @@ COMMIT;
 
 
 SELECT * FROM board;
-
-SELECT pageview FROM board WHERE idx = 4 and password = 'sutoh123!@'; 

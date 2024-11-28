@@ -4,77 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <style>
-      * {
-        margin: 0 auto;
-        padding: 0;
-        list-style: none;
-      }
-      html,
-      body {
-        width: 400px;
-      }
-
-      ul li > * {
-        width: 100%;
-      }
-
-      #title {
-        font-size: 40px;
-        font-weight: bold;
-        border: 0;
-        margin-top: 10px;
-        margin-bottom: 20px;
-      }
-      #content-caption{
-        margin-top:10px;
-        margin-bottom:5px;
-      }
-      #content {
-        font-size: 16px;
-        line-height: 20px;
-        height: auto;
-        padding:5px;
-        min-height:300px;
-        border: 1px solid #ccc;
-        overflow-y: hidden;
-        resize:none;
-        white-space: pre-wrap;
-        word-wrap: break-word;
-        outline: none;
-      }
-      #content:focus {
-        border-color: #669;
-        border-width:2px;
-      }
-      #bottom-button-bar {
-        position: fixed;
-        bottom: 0;
-        width: 400px;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        height: 60px;
-        margin: 0;
-      }
-      #bottom-button-bar button {
-        margin: 0;
-        width: 100%;
-        border: none;
-        font-size: 30px;
-        line-height: 60px;
-        cursor: pointer;
-      }
-      #bottom-button-bar #submit{
-        background-color: #06f;
-        color:#eee;
-      }
-      #bottom-button-bar #cancel{
-        background-color: #ccc;
-        color:#000;
-      }
-
-    </style>
+    <link rel="stylesheet" href="/style/board-create.css">
   </head>
   <body>
     <header>
@@ -126,7 +56,6 @@
           <li><div id="content-caption">Write your content below</div></li>
           <li>
             <input type="hidden" name="content" id="hidden-content" />
-            </div>
             <div
               contenteditable="true"
               id="content"
@@ -136,40 +65,10 @@
 
         <div id="bottom-button-bar">
           <button type="submit" id="submit">Write</button>
-          <button type="button" id="cancel" href="/home">Cancel</button>
+          <button type="button" id="cancel" onclick="location.href='/home';">Cancel</button>
         </div>
       </form>
     </section>
   </body>
-  <script>
-    function validate(form) {
-      if(form.content == null || form.content.length == 0){
-        return false;
-      }
-      return true;
-    }
-    function escapeHtml(str) {
-      const element = document.createElement('div');
-      if (str) {
-        element.innerText = str;
-        element.textContent = str;
-      }
-      return element.innerHTML;
-    }
-
-    const form = document['form-write-board'];
-    const content = document.getElementById("content");
-    form.addEventListener('submit', e=>{
-      e.preventDefault();
-      this.content.value = escapeHtml(content.innerHTML);
-      console.log(this.content.value)
-      if(validate(this)){
-        this.submit();
-      }
-    })
-    document.getElementById("content").addEventListener("input", function() {
-      this.style.height = "auto"; // Reset the height before recalculating
-      this.style.height = (this.scrollHeight) + "px"; // Adjust to scrollHeight
-    });
-  </script>
+  <script src="/js/board-create.js"></script>
 </html>
