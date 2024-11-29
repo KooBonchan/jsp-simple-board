@@ -10,12 +10,11 @@
     <header>
       <a href="#" onclick="history.back();"
         class="back-button">←</a>
-      <span class="logo">LOGO</span>
+      <span class="logo" onclick="toHome();">LOGO</span>
       <span>menu</span>
     </header>
     <section>
       <form
-        action="#"
         method="post"
         name="form-write-board"
         enctype="multipart/form-data"
@@ -58,17 +57,20 @@
             <input type="hidden" name="content" id="hidden-content" />
             <div
               contenteditable="true"
-              id="content"
+              id="text-area"
             ></div>
           </li>
         </ul>
 
         <div id="bottom-button-bar">
-          <button type="submit" id="submit">Write</button>
-          <button type="button" id="cancel" onclick="location.href='/home';">Cancel</button>
+          <button type="button" id="write">Write</button>
+          <button type="button" id="cancel" onclick="toHome();">Cancel</button>
         </div>
       </form>
     </section>
   </body>
   <script src="/js/board-create.js"></script>
+  <script>
+  function toHome(){location.href="/home";}
+  </script>
 </html>

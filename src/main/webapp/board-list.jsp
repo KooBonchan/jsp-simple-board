@@ -44,13 +44,13 @@
 			</td>
 			<td>${board.pageview}</td>
 			<c:choose>
-			<c:when test="${not empty board.realImagePath}">
-			<td>${board.download}</td>
-			<td><a href="#">[download]</a></td>
+			<c:when test="${board.download >= 0}">
+				<td>${board.download}</td>
+				<td><a href="/board/download?idx=${board.idx}">[download]</a></td>
 			</c:when>
 			<c:otherwise>
-			<td>-</td>
-			<td>no image</td>
+				<td>-</td>
+				<td>no image</td>
 			</c:otherwise>
 			</c:choose>
 		</tr>

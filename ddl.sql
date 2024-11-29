@@ -17,7 +17,7 @@ CREATE TABLE board(
 );
 CREATE VIEW board_view
 AS
-SELECT idx, nickname, title, postdate, pageview, download,
+SELECT idx, nickname, title, postdate, pageview, real_img_path, download,
 row_number() OVER (ORDER BY idx DESC) AS row_num
 FROM board;
 CREATE SEQUENCE seq_board_idx;

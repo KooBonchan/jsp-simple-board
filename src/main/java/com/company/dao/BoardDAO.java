@@ -73,7 +73,7 @@ public class BoardDAO {
 		int endBoardClosed = page_size * (page);
 		List<BoardVO> boards = new ArrayList<>();
 		
-		String sql = "SELECT idx, nickname, title, postdate, pageview, download "
+		String sql = "SELECT idx, nickname, title, postdate, pageview, real_img_path, download "
 				+ searchBoardInlineViewQuery(BoardSearchCategory.fromString(category), searchQuery)
 				+ "WHERE row_num > ? and row_num <= ?";
 		try(Connection connection = dataSource.getConnection();
@@ -89,6 +89,7 @@ public class BoardDAO {
 					String title = resultSet.getString("title");					
 					Timestamp postdate = resultSet.getTimestamp("postdate");
 					int pageview = resultSet.getInt("pageview");
+					String realImagePath = resultSet.getString("real_img_path");
 					int download = resultSet.getInt("download");
 					
 					boardVO.setIdx(idx);
@@ -96,7 +97,12 @@ public class BoardDAO {
 					boardVO.setTitle(title);
 					boardVO.setPostdate(postdate);
 					boardVO.setPageview(pageview);
-					boardVO.setDownload(download);
+					if(realImagePath != null) {
+						boardVO.setDownload(download);
+					}
+					else {
+						boardVO.setDownload(-1);
+					}
 					
 					boards.add(boardVO);
 				}
@@ -241,7 +247,7 @@ public class BoardDAO {
 			return " FROM board_view ";
 		}
 		return " FROM ("
-				+ " SELECT idx, nickname, title, postdate, pageview, download, "
+				+ " SELECT idx, nickname, title, postdate, pageview, org_img_path, download, "
 				+ "    row_number() OVER (ORDER BY idx DESC) AS row_num "
 				+ "  FROM board "
 				+ "  WHERE "+ category.toString()+" LIKE '%"+searchQuery+"%'"

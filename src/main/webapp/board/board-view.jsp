@@ -20,7 +20,7 @@
 <section>
     
     <c:if test="${not empty board.realImagePath}">
-   		<img src="/assets/${board.realImagePath}" alt="image">
+   		<img src="/uploads/${board.realImagePath}" alt="image">
    		<div class="image-footer">
             <span>${board.download}</span>
             <button type="button">Download</button>
@@ -70,7 +70,7 @@ function boardDelete(){
 	passwordDialog.showModal();
 }
 /******** Dialogs ********/
-cancelButton.addEventListener('click', passwordDialog.close);
+cancelButton.addEventListener('click', ()=>passwordDialog.close());
 passwordDialog.querySelector('form').addEventListener('submit', (event) => {
     event.preventDefault();
     const password = passwordInput.value;

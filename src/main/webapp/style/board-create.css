@@ -23,7 +23,7 @@
         margin-top:10px;
         margin-bottom:5px;
       }
-      #content {
+      #text-area {
         font-size: 16px;
         line-height: 20px;
         height: auto;
@@ -36,7 +36,7 @@
         word-wrap: break-word;
         outline: none;
       }
-      #content:focus {
+      #text-area:focus {
         border-color: #669;
         border-width:2px;
       }
@@ -58,7 +58,7 @@
         line-height: 60px;
         cursor: pointer;
       }
-      #bottom-button-bar #submit{
+      #bottom-button-bar #write{
         background-color: #06f;
         color:#eee;
       }

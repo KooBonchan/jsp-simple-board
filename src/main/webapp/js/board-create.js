@@ -14,16 +14,15 @@ function escapeHtml(str) {
 }
 
 const form = document['form-write-board'];
-const content = document.getElementById("content");
-form.addEventListener('submit', e=>{
+const textArea = document.getElementById("text-area");
+document.getElementById("write").addEventListener('click', e=>{
   e.preventDefault();
-  this.content.value = escapeHtml(content.innerHTML);
-  console.log(this.content.value)
-  if(validate(this)){
-    this.submit();
+  form['content'].value = escapeHtml(textArea.innerHTML);
+  if(validate(form)){
+    form.submit();
   }
 })
-document.getElementById("content").addEventListener("input", function() {
+document.getElementById("text-area").addEventListener("input", function() {
   this.style.height = "auto"; // Reset the height before recalculating
   this.style.height = (this.scrollHeight) + "px"; // Adjust to scrollHeight
 });
