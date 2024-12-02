@@ -27,8 +27,8 @@ public class BoardList extends HttpServlet {
 			
 		}
 		
-		String searchCategory = request.getParameter("search-category");
-		String searchQuery = request.getParameter("search-query");
+		String searchCategory = request.getParameter("search_category");
+		String searchQuery = request.getParameter("search_query");
 		request.setAttribute("boards", boardDAO.readBoardPage(page, searchCategory, searchQuery));
 		request.getRequestDispatcher("board-list.jsp").forward(request, response);
 	}

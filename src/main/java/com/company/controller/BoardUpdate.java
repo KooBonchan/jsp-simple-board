@@ -6,10 +6,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
 
 import com.company.dao.BoardDAO;
 import com.company.util.FileUtil;
@@ -88,6 +90,16 @@ public class BoardUpdate extends HttpServlet {
 		}
     	
     	boardDAO.updateBoard(idx, vo);
+    	HttpSession session = request.getSession();
+    	if(session != null) {
+    		@SuppressWarnings("unchecked")
+    		HashSet<Integer> accessible = (HashSet<Integer>) session.getAttribute("accessible");
+        	if( accessible != null & accessible.contains(idx)) {
+        		accessible.remove(idx);
+        	}
+
+    	}    	
+    	
     	response.sendRedirect("/board?idx=" + idx);
 		return;
 	}

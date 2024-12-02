@@ -279,7 +279,7 @@ public class BoardDAO {
 			return " FROM board_view ";
 		}
 		return " FROM ("
-				+ " SELECT idx, nickname, title, postdate, pageview, org_img_path, download, "
+				+ " SELECT idx, nickname, title, postdate, pageview, real_img_path, download, "
 				+ "    row_number() OVER (ORDER BY idx DESC) AS row_num "
 				+ "  FROM board "
 				+ "  WHERE "+ category.toString()+" LIKE '%"+searchQuery+"%'"

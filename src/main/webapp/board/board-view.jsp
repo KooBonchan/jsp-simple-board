@@ -12,9 +12,9 @@
 </head>
 <body>
 <header>
-    <span><a href="/home" class="back-button">menu</a></span>
-    <span class="logo">LOGO</span>
-    <span></span>
+    <span><a href="#" onclick="history.back();">Back</a></span>
+    <span class="logo"><a href="/home">LOGO</a></span>
+    <span><a href="/board/create">Write</a></span>
     
 </header>
 <section>
@@ -22,7 +22,7 @@
     <c:if test="${not empty board.realImagePath}">
    		<img src="/uploads/${board.realImagePath}" alt="image">
    		<div class="image-footer">
-            <span>${board.download}</span>
+            <span style="color:#666; margin-right:10px;">downloads: ${board.download} </span>
             <button type="button" onclick="location.href='/board/download?idx=${board.idx}'">Download</button>
         </div>
    	</c:if>
