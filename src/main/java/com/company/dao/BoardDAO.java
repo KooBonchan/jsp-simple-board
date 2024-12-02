@@ -71,10 +71,6 @@ public class BoardDAO {
 		if(page < 1) page = 1;
 		int startBoardOpen = page_size * (page - 1);
 		int endBoardClosed = page_size * (page);
-		System.out.println(page_size);
-		System.out.println(startBoardOpen);
-		System.out.println(endBoardClosed);
-		
 		List<BoardVO> boards = new ArrayList<>();
 		
 		String sql = "SELECT idx, nickname, title, postdate, pageview, real_img_path, download "
@@ -245,7 +241,6 @@ public class BoardDAO {
 		try(Connection connection = dataSource.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(sql))
 		{
-			int index = 1;
 			preparedStatement.setInt(1, idx);
 			int result = preparedStatement.executeUpdate();
 			return result > 0;
