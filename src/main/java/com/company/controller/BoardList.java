@@ -22,8 +22,9 @@ public class BoardList extends HttpServlet {
 		int page = 1;
 		try {
 			page = Integer.parseInt(request.getParameter("page"));
+			if(page < 0) throw new NumberFormatException("invalid page range");
 		} catch(RuntimeException ignored) {
-			page = 1;
+			
 		}
 		
 		String searchCategory = request.getParameter("search-category");

@@ -32,6 +32,7 @@ public class Board extends HttpServlet {
 			response.sendRedirect("/home");
 			return;
 		}
+		boardDAO.increasePageview(idx);
 		BoardVO board = boardDAO.readBoard(idx);
 		if(board == null) {
 			response.sendRedirect("/home");
@@ -39,11 +40,6 @@ public class Board extends HttpServlet {
 		}
 		request.setAttribute("board", board);
 		request.getRequestDispatcher("/board/board-view.jsp").forward(request, response);
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
 	}
 
 }

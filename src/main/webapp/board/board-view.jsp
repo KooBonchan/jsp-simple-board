@@ -12,10 +12,10 @@
 </head>
 <body>
 <header>
-    <a href="#" onclick="history.back();"
-    	class="back-button">←</a>
+    <span><a href="/home" class="back-button">menu</a></span>
     <span class="logo">LOGO</span>
-    <span>menu</span>
+    <span></span>
+    
 </header>
 <section>
     
@@ -23,7 +23,7 @@
    		<img src="/uploads/${board.realImagePath}" alt="image">
    		<div class="image-footer">
             <span>${board.download}</span>
-            <button type="button">Download</button>
+            <button type="button" onclick="location.href='/board/download?idx=${board.idx}'">Download</button>
         </div>
    	</c:if>
        

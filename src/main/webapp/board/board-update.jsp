@@ -18,11 +18,12 @@
     </header>
     <section>
       <form
-        action="#"
+      	action="/board/update"
         method="post"
         name="form-write-board"
         enctype="multipart/form-data"
       >
+      <input type="hidden" name="idx" id="idx" value="${board.idx}"/>
         <ul>
           <li>
             <input
@@ -62,20 +63,23 @@
           </li>
           <li><div id="content-caption">Write your content below</div></li>
           <li>
-            <input type="hidden" name="content" id="hidden-content" />
+            <input type="hidden" name="content" id="content" value="${board.content}"/>
             <div
               contenteditable="true"
-              id="content"
-            ></div>
+              id="text-area"
+            >${board.content}</div>
           </li>
         </ul>
 
         <div id="bottom-button-bar">
-          <button type="submit" id="submit">Write</button>
+          <button type="button" id="write">Write</button>
           <button type="button" id="cancel" onclick="history.back();">Cancel</button>
         </div>
       </form>
     </section>
   </body>
   <script src="/js/board-create.js"></script>
+  <script>
+  function toHome(){location.href="/home";}
+  </script>
 </html>

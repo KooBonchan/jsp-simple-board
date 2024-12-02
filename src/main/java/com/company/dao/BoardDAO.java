@@ -24,7 +24,7 @@ import lombok.Setter;
  */
 public class BoardDAO {
 	@Setter
-	private int page_size = 10;
+	private static int page_size = 10;
 	
 	DataSource dataSource;
 	{
@@ -71,6 +71,10 @@ public class BoardDAO {
 		if(page < 1) page = 1;
 		int startBoardOpen = page_size * (page - 1);
 		int endBoardClosed = page_size * (page);
+		System.out.println(page_size);
+		System.out.println(startBoardOpen);
+		System.out.println(endBoardClosed);
+		
 		List<BoardVO> boards = new ArrayList<>();
 		
 		String sql = "SELECT idx, nickname, title, postdate, pageview, real_img_path, download "
@@ -162,14 +166,14 @@ public class BoardDAO {
 	}
 	
 	public boolean checkPermission(int idx, String password) {
-		String sql = "SELECT count(pageview) "
+		String sql = "SELECT idx "
 				+ "FROM board "
 				+ "WHERE idx = ? and password = ? ";
 		try(Connection connection = dataSource.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(sql))
 		{
 			preparedStatement.setInt(1, idx);
-			preparedStatement.setString(2, password);
+			preparedStatement.setString(2, password.trim());
 			try (ResultSet resultSet = preparedStatement.executeQuery()) {
 				if(resultSet.next()) return true;
 			}
@@ -189,7 +193,6 @@ public class BoardDAO {
 								boardVO.getRealImagePath() != null;
 		
 		String sql = "UPDATE board SET "
-				+ "password = ?, "
 				+ "title = ?, "
 				+ "content = ? "
 				+ (imageUpdated ? ",org_img_path = ?,real_img_path = ? " : "")
@@ -198,7 +201,6 @@ public class BoardDAO {
 			PreparedStatement preparedStatement = connection.prepareStatement(sql))
 		{
 			int index = 1;
-			preparedStatement.setString(index++, boardVO.getPassword());
 			preparedStatement.setString(index++, boardVO.getTitle());
 			preparedStatement.setString(index++, boardVO.getContent());
 			
@@ -210,6 +212,41 @@ public class BoardDAO {
 			}
 			preparedStatement.setInt(index++, boardVO.getIdx());
 			
+			int result = preparedStatement.executeUpdate();
+			return result > 0;
+		} catch (SQLException e) {
+			System.err.println(sql);
+			System.err.println("SQL INSERT error: " + e.getMessage());
+		}
+		return false;
+	}
+	
+	public boolean increasePageview(int idx) {
+		String sql = "UPDATE board SET "
+				+ "pageview = pageview + 1 "
+				+ "WHERE idx = ? ";
+		try(Connection connection = dataSource.getConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(sql))
+		{
+			preparedStatement.setInt(1, idx);
+			int result = preparedStatement.executeUpdate();
+			return result > 0;
+		} catch (SQLException e) {
+			System.err.println(sql);
+			System.err.println("SQL INSERT error: " + e.getMessage());
+		}
+		return false;
+	}
+	
+	public boolean increaseDownload(int idx) {
+		String sql = "UPDATE board SET "
+				+ "download = download + 1 "
+				+ "WHERE idx = ? ";
+		try(Connection connection = dataSource.getConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(sql))
+		{
+			int index = 1;
+			preparedStatement.setInt(1, idx);
 			int result = preparedStatement.executeUpdate();
 			return result > 0;
 		} catch (SQLException e) {

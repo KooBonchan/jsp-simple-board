@@ -5,7 +5,7 @@ CREATE TABLE board(
   idx integer PRIMARY KEY,
   -- content
   nickname varchar2(10) NOT NULL,
-  password char(64) NOT NULL, -- sha256
+  password varchar(64) NOT NULL, -- sha256
   title varchar2(200) NOT NULL,
   content varchar2(2000) NOT NULL,
   org_img_path varchar2(100),
@@ -28,6 +28,8 @@ INSERT INTO board (idx, nickname, password, title, CONTENT) VALUES (seq_board_id
 INSERT INTO board (idx, nickname, password, title, CONTENT) VALUES (seq_board_idx.nextval, 'smitsuru', 'sutoh123!@', 'Sunnyside Cruise', 'of 35th anniversary version, T-square super big band.');
 COMMIT;
 
-
+INSERT INTO BOARD 
+(idx, nickname, password, title, CONTENT)
+SELECT seq_board_idx.nextval, nickname, password, title, content FROM board;
 
 SELECT * FROM board;

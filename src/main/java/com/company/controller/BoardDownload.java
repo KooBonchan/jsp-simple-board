@@ -53,6 +53,7 @@ public class BoardDownload extends HttpServlet {
 						outputStream.write(b, 0, readBuffer);
 					}
 				}
+				boardDAO.increaseDownload(idx);
 			}
 		} catch (NumberFormatException e) {
 			response.setContentType("text/html;charset=utf-8");

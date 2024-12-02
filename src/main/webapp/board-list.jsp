@@ -56,7 +56,69 @@
 		</tr>
 	</c:forEach>
 	</table>
-	<div>1, 2, 3, 4, 5</div>
+
+
+	<footer>
+	<div id="page-index">
+		<c:set var="page" value="${empty param.page? 1 : param.page}" />
+		
+	    <c:choose>
+           <c:when test="${page - 5 <= 0}">
+               <span>prev</span>
+           </c:when>
+           <c:otherwise>
+               <a href="/home?page=${page - 5}">prev</a>
+           </c:otherwise>
+       	</c:choose>
+	    
+		<c:forEach var="pages" begin="${page - (page-1) % 5}" end="${page - (page-1)%5 + 4}" >
+			<c:choose>
+            <c:when test="${pages == page}">
+                <span>${pages}</span>
+            </c:when>
+            <c:otherwise>
+                <a href="/home?page=${pages}">${pages}</a>
+            </c:otherwise>
+        	</c:choose>
+		</c:forEach>
+		<a href="/home?page=${page + 5}">next</a>
+		
+		<label for="page-size">Page Size: </label>
+		<c:set var="pageSize" value="${sessionScope.pageSize != null ? sessionScope.pageSize : 10}" />
+		<select id="page-size" onchange="updatePageSize()">
+	        <option value="10" ${pageSize == 10 ? 'selected' : ''}>10</option>
+	        <option value="20" ${pageSize == 20 ? 'selected' : ''}>20</option>
+	        <option value="50" ${pageSize == 50 ? 'selected' : ''}>50</option>
+	    </select>
+	</div>
 	<a href="./board/create">Write new</a>
+	</footer>	
 </body>
+
+<script>
+    function updatePageSize() {
+        const pageSize = document.getElementById('page-size').value;
+
+        fetch('/api/pagesize', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ pageSize: pageSize }),
+        })
+        .then(response => {
+            if (response.ok) {
+                location.reload();
+            } else {
+                console.error('Failed to update page size');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+    
+    
+</script>
+
 </html>

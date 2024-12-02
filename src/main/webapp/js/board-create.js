@@ -1,4 +1,5 @@
 function validate(form) {
+	console.log(form);
   if(form.content == null || form.content.length == 0){
     return false;
   }

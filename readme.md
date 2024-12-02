@@ -2,18 +2,35 @@
 
 ## Requirements
 
-- create or read board without signing
-- update, delete can only done by writer, which is verified by password.
-- no need of password encrypting (currently), though password length should be longer than 4, username should be longer than 0
+### Board List
+
+- search board by title, content, writer
 - single image upload per board, download available from board list view.
+- direct download from board list
+- download count
+
+### Board View
+
+- update, delete can only done by writer
+  - verified by password.
+- simple password with no encryption
+- pageview and download count
+
+### Others
+
+- create board with writer and password specified. (without application signing)
 
 ---
 
-### Todos
+### Adjustment
 
-- board paging by page size - page size change and refresh(redirect to current page)
+- change board per page using ajax
 - prev, next board
 
 ## Models
 
 ![data definition](/assets/data.png)
+
+## Challenges
+
+- ajax download to update downloads count with ajax
