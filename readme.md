@@ -1,5 +1,8 @@
 # JSP simple board
 
+- start date: 24.11.26
+- end date: 24.12.03
+
 ## Requirements
 
 ### Board List
